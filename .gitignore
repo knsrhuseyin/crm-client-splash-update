@@ -2,3 +2,4 @@
 .idea/
 app/
 manifest_local.json
+__pycache__/
