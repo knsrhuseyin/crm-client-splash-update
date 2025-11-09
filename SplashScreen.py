@@ -62,7 +62,7 @@ class SplashScreen(QWidget):
 
         # 2. Vérifier les fichiers manquants
         self.label.setText("Vérification des fichiers locaux...")
-        to_download = get_missing_or_corrupted_files(Path("utils/app"), server_manifest, local_manifest)
+        to_download = get_missing_or_corrupted_files(Path("app"), server_manifest, local_manifest)
 
         if to_download:
             self.label.setText(f"Téléchargement de \n{len(to_download)} fichier(s)...")
@@ -71,7 +71,7 @@ class SplashScreen(QWidget):
                 self.progress_bar.setValue(p)
                 self.label.setText(f"Téléchargement des fichiers...\n{file}")
 
-            await download_missing_files(server_manifest, to_download, Path("utils/app"), progress)
+            await download_missing_files(server_manifest, to_download, Path("app"), progress)
 
         # 3. Sauvegarde du manifest
         save_local_manifest(server_manifest)
