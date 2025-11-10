@@ -1,6 +1,6 @@
 """
 SplashScreen.py
-================
+===============
 
 Module définissant la fenêtre de démarrage (Splash Screen) de l'application.
 
@@ -28,25 +28,25 @@ from utils.update_manager import (
     download_missing_files,
     save_local_manifest,
 )
-from utils.utils import launch_client, center_on_screen
+from utils.utils import launch_client, center_on_screen, DraggableLabel
 
 
 class SplashScreen(QWidget):
     """Écran de chargement initial du programme.
 
-    Cette classe affiche une fenêtre simple indiquant la progression
-    de la vérification et du téléchargement des mises à jour avant
-    le lancement du client.
+    Affiche la progression de la vérification et du téléchargement des mises à jour
+    avant le lancement du client.
     """
 
     def __init__(self) -> None:
         """Initialise le Splash Screen et configure l'interface utilisateur."""
         super().__init__()
-        self.label = None
-        self.progress_bar = None
-        self.layout = None
-        self.button_reload = None
-        self.button_close = None
+        self.label: QLabel | None = None
+        self.progress_bar: QProgressBar | None = None
+        self.layout: QVBoxLayout | None = None
+        self.button_reload: QPushButton | None = None
+        self.button_close: QPushButton | None = None
+        self.author_label: DraggableLabel | None = None
         self.init_ui()
 
     def init_ui(self) -> None:
@@ -75,20 +75,30 @@ class SplashScreen(QWidget):
         )
         self.button_close.clicked.connect(self.close)
 
+        self.author_label = DraggableLabel(
+            "CRM Splash | Created by knsrhuseyin | Version 1.0", self
+        )
+        self.author_label.setStyleSheet("font-size: 12px; color: gray;")
+        self.author_label.setFixedHeight(30)
+
         self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(10, 0, 10, 10)
+        self.layout.setSpacing(2)
+        self.layout.addWidget(self.author_label)
         self.layout.addWidget(self.label)
         self.layout.addWidget(self.progress_bar)
         self.layout.addWidget(self.button_reload)
         self.layout.addWidget(self.button_close)
 
+        # Lancement de la vérification des mises à jour dès l'ouverture
         QTimer.singleShot(0, lambda: asyncio.create_task(self.check_for_update()))
 
     def error(self, text: str, error: bool = True) -> None:
         """Affiche un message d'erreur ou rétablit l'affichage normal.
 
         Args:
-            text (str): Texte à afficher sur l'écran.
-            error (bool): Définit si le message indique une erreur ou non.
+            text (str): Message à afficher sur l'écran.
+            error (bool): Si True, affiche le bouton "Réessayer".
         """
         self.label.setText(text)
         self.progress_bar.setVisible(not error)
@@ -103,9 +113,6 @@ class SplashScreen(QWidget):
             3. Télécharge les fichiers manquants ou corrompus.
             4. Sauvegarde le manifest mis à jour.
             5. Lance le client.
-
-        Returns:
-            None
         """
         self.error("Vérification des fichiers...", False)
         manifest_url = "https://api-crm.knsr-family.com/update/latest"
