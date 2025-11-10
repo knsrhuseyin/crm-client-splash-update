@@ -1,3 +1,19 @@
+"""
+main.py
+=======
+
+Point d'entrée principal de l'application.
+
+Ce module initialise la boucle événementielle asynchrone et affiche l'écran
+de démarrage (Splash Screen) lors du lancement de l'application.
+
+Dependencies:
+    asyncio: Gestion des boucles événementielles asynchrones.
+    qasync: Intégration entre asyncio et Qt.
+    PySide6: Framework graphique pour l'interface utilisateur.
+    pathlib: Gestion des chemins de fichiers.
+"""
+
 import asyncio
 from pathlib import Path
 
@@ -8,12 +24,18 @@ from qasync import QApplication
 from SplashScreen import SplashScreen
 
 
-def main():
-    """
-    Fonction principale permettant l'ouverture de l'application en ouvrant le Splash Screen.
+def main() -> None:
+    """Lance l'application en affichant l'écran de démarrage (Splash Screen).
+
+    Initialise la boucle événementielle asynchrone `qasync` et démarre
+    l'application PySide6.
+
+    Returns:
+        None
     """
     app = QApplication([])
-    app.setWindowIcon(QIcon(str(Path(Path.cwd() / "assets" / "icon.ico"))))
+    app.setWindowIcon(QIcon(str(Path.cwd() / "assets" / "icon.ico")))
+
     loop = qasync.QEventLoop(app)
     asyncio.set_event_loop(loop)
 
@@ -25,5 +47,5 @@ def main():
 
 
 if __name__ == "__main__":
-    """Lancement du programme"""
+    """Point d'exécution du programme."""
     main()
