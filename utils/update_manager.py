@@ -39,8 +39,6 @@ from utils.Requests import Requests
 # ------------------------------
 
 MANIFEST_LOCAL = Path.cwd() / "manifest_local.json"
-CLIENT_DIR = Path.cwd() / "app"
-
 
 # ------------------------------
 # Gestion des fichiers

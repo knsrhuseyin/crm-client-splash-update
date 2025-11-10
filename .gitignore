@@ -3,3 +3,5 @@
 app/
 manifest_local.json
 __pycache__/
+build/
+dist/

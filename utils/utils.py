@@ -25,7 +25,7 @@ from PySide6.QtWidgets import QLabel, QWidget
 # =======================
 # Configuration
 # =======================
-CLIENT_EXE = Path.cwd() / "app" / "CRMClient.exe"
+CLIENT_EXE = Path.cwd() / "CRMClient.exe"
 
 
 class DraggableLabel(QLabel):
